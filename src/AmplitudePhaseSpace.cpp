@@ -53,8 +53,14 @@ int AmplitudePhaseSpace::WhichBin(const Event &event) const {
   if(m_ReadAmplitudeFromEvent) {    
     event.GetAmplitudes(D_amplitude, Dbar_amplitude);
   } else {
+    std::vector<double> EventVector_cconj = {
+      EventVector[4], EventVector[5], EventVector[6], EventVector[7],
+      EventVector[0], EventVector[1], EventVector[2], EventVector[3],
+      EventVector[12], EventVector[13], EventVector[14], EventVector[15],
+      EventVector[8], EventVector[9], EventVector[10], EventVector[11],
+    };
     D_amplitude = m_amplitude(EventVector, +1);
-    Dbar_amplitude = m_amplitude(EventVector, -1);
+    Dbar_amplitude = m_amplitude(EventVector_cconj, -1);
   }
   if(TMath::IsNaN(D_amplitude.real()) || TMath::IsNaN(D_amplitude.imag()) || TMath::IsNaN(Dbar_amplitude.real()) || TMath::IsNaN(Dbar_amplitude.imag())) {
     return 0;

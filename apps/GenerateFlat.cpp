@@ -48,8 +48,17 @@ int main(int argc, char *argv[]) {
     Event event(generator.Generate());
     std::vector<double> coordinates = KKpipiMath::RectCoordinates(event);
     X = coordinates;
-    Damp = amplitude(event.GetEventVector(), +1);
-    DBARamp = amplitude(event.GetEventVector(), -1);
+
+    auto event_vector = event.GetEventVector();
+    std::vector<double> event_vector_cconj = {
+      event_vector[4], event_vector[5], event_vector[6], event_vector[7],
+      event_vector[0], event_vector[1], event_vector[2], event_vector[3],
+      event_vector[12], event_vector[13], event_vector[14], event_vector[15],
+      event_vector[8], event_vector[9], event_vector[10], event_vector[11],
+    };
+    Damp = amplitude(event_vector, +1);
+    DBARamp = amplitude(event_vector_cconj, -1);
+
     // If amplitude is nan, event is probably on the boundary of phase space and wrongly classified as kinematically impossible, so discard event
     if(TMath::IsNaN(std::norm(Damp)) || TMath::IsNaN(std::norm(DBARamp))) {
       continue;
